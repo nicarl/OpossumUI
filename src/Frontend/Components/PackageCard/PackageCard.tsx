@@ -17,6 +17,7 @@ import { ButtonText, PopupType, View } from '../../enums/enums';
 import { useSelector } from 'react-redux';
 import {
   getAttributionIdMarkedForReplacement,
+  getExternalAttributionsToResources,
   getManualAttributions,
   getManualAttributionsToResources,
   getTemporaryPackageInfo,
@@ -92,6 +93,7 @@ interface PackageCardProps {
   hideContextMenuAndMultiSelect?: boolean;
   hideResourceSpecificButtons?: boolean;
   showCheckBox?: boolean;
+  view: View;
 }
 
 export function PackageCard(props: PackageCardProps): ReactElement | null {
@@ -107,7 +109,16 @@ export function PackageCard(props: PackageCardProps): ReactElement | null {
     useSelector(getAttributionIdOfDisplayedPackageInManualPanel) ?? '';
   const manualAttributions = useSelector(getManualAttributions);
   const selectedResourceId = useSelector(getSelectedResourceId);
-  const attributionsToResources = useSelector(getManualAttributionsToResources);
+  const manualAttributionsToResources = useSelector(
+    getManualAttributionsToResources
+  );
+  const externalAttributionsToResources = useSelector(
+    getExternalAttributionsToResources
+  );
+  const attributionsToResources =
+    props.view === View.Attribution
+      ? manualAttributionsToResources
+      : externalAttributionsToResources;
   const resolvedExternalAttributions = useAppSelector(
     getResolvedExternalAttributions
   );

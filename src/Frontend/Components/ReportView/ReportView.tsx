@@ -82,7 +82,12 @@ export function ReportView(): ReactElement {
   function getOnIconClick(): (attributionId: string) => void {
     return (attributionId): void => {
       dispatch(navigateToView(View.Attribution));
-      dispatch(changeSelectedAttributionIdOrOpenUnsavedPopup(attributionId));
+      dispatch(
+        changeSelectedAttributionIdOrOpenUnsavedPopup(
+          attributionId,
+          View.Attribution
+        )
+      );
     };
   }
 

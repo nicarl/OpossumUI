@@ -5,7 +5,7 @@
 
 import React, { ReactElement } from 'react';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
-import { ButtonText } from '../../enums/enums';
+import { ButtonText, View } from '../../enums/enums';
 import { NotificationPopup } from '../NotificationPopup/NotificationPopup';
 import { closePopup } from '../../state/actions/view-actions/view-actions';
 import { doNothing } from '../../util/do-nothing';
@@ -74,6 +74,7 @@ export function ReplaceAttributionPopup(): ReactElement {
           url: attribution?.url,
           licenseName: attribution?.licenseName,
         }}
+        view={View.Attribution}
       />
     );
   }

@@ -7,6 +7,7 @@ import { PackagePanelTitle, PopupType, View } from '../../../enums/enums';
 import { State } from '../../../types/types';
 import {
   getAttributionIdToSaveTo,
+  getExternalAttributions,
   getManualAttributions,
   getPackageInfoOfSelected,
   getTemporaryPackageInfo,
@@ -14,16 +15,16 @@ import {
 } from '../../selectors/all-views-resource-selectors';
 import { getTargetView } from '../../selectors/view-selector';
 import {
-  setDisplayedPackageAndResetTemporaryPackageInfo,
   openResourceInResourceBrowser,
+  setDisplayedPackageAndResetTemporaryPackageInfo,
   setSelectedResourceOrAttributionIdToTargetValue,
 } from '../resource-actions/navigation-actions';
 import { AppThunkAction, AppThunkDispatch } from '../../types';
 import {
   closePopup,
-  setTargetView,
   navigateToView,
   openPopup,
+  setTargetView,
 } from '../view-actions/view-actions';
 import {
   savePackageInfo,
@@ -55,16 +56,24 @@ export function navigateToSelectedPathOrOpenUnsavedPopup(
 }
 
 export function changeSelectedAttributionIdOrOpenUnsavedPopup(
-  attributionId: string
+  attributionId: string,
+  view: View
 ): AppThunkAction {
   return (dispatch: AppThunkDispatch, getState: () => State): void => {
     const manualAttributions = getManualAttributions(getState());
+    const externalAttributions = getExternalAttributions(getState());
     if (wereTemporaryPackageInfoModified(getState())) {
       dispatch(setTargetSelectedAttributionId(attributionId));
       dispatch(openPopup(PopupType.NotSavedPopup));
     } else {
       dispatch(setSelectedAttributionId(attributionId));
-      dispatch(setTemporaryPackageInfo(manualAttributions[attributionId]));
+      dispatch(
+        setTemporaryPackageInfo(
+          view === View.Attribution
+            ? manualAttributions[attributionId]
+            : externalAttributions[attributionId]
+        )
+      );
     }
   };
 }

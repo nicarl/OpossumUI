@@ -6,6 +6,7 @@
 import React, { ReactElement } from 'react';
 import { PackageCard } from '../PackageCard/PackageCard';
 import { ListCardConfig, ListCardContent } from '../../types/types';
+import { View } from '../../enums/enums';
 
 interface PackagePanelCardProps {
   cardContent: ListCardContent;
@@ -29,6 +30,7 @@ export function PackagePanelCard(props: PackagePanelCardProps): ReactElement {
         packageCount={props.packageCount}
         hideResourceSpecificButtons={props.hideResourceSpecificButtons}
         showOpenResourcesIcon={true}
+        view={View.Attribution}
       />
     </div>
   );

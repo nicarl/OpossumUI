@@ -21,12 +21,13 @@ import {
 import { setTemporaryPackageInfo } from '../../state/actions/resource-actions/all-views-simple-actions';
 import {
   getResourceIdsOfSelectedAttribution,
+  getResourceIdsOfSelectedExternalAttribution,
   getSelectedAttributionId,
 } from '../../state/selectors/attribution-view-resource-selectors';
 import { OpossumColors } from '../../shared-styles';
 import { useWindowHeight } from '../../util/use-window-height';
 import { openPopupWithTargetAttributionId } from '../../state/actions/view-actions/view-actions';
-import { PopupType } from '../../enums/enums';
+import { PopupType, View } from '../../enums/enums';
 
 const useStyles = makeStyles({
   root: {
@@ -50,15 +51,25 @@ const useStyles = makeStyles({
   },
 });
 
-export function AttributionDetailsViewer(): ReactElement | null {
+interface AttributionDetailsViewerProps {
+  view: View.Attribution | View.Signal;
+}
+
+export function AttributionDetailsViewer(
+  props: AttributionDetailsViewerProps
+): ReactElement | null {
   const classes = useStyles();
 
   const selectedAttributionId = useAppSelector(getSelectedAttributionId);
   const temporaryPackageInfo = useAppSelector(getTemporaryPackageInfo);
-  const resourceIdsOfSelectedAttributionId: Array<string> = useAppSelector(
-    getResourceIdsOfSelectedAttribution,
-    isEqual
-  );
+  const resourceIdsOfSelectedManualAttributionId: Array<string> =
+    useAppSelector(getResourceIdsOfSelectedAttribution, isEqual);
+  const resourceIdsOfSelectedExternalAttributionId: Array<string> =
+    useAppSelector(getResourceIdsOfSelectedExternalAttribution, isEqual);
+  const resourceIdsOfSelectedAttributionId: Array<string> =
+    props.view === View.Attribution
+      ? resourceIdsOfSelectedManualAttributionId
+      : resourceIdsOfSelectedExternalAttributionId;
 
   const resourceListMaxHeight = useWindowHeight() - 112;
 

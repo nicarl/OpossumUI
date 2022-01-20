@@ -6,7 +6,10 @@
 import { PackageInfo } from '../../../../shared/shared-types';
 import { FilterType, PopupType, View } from '../../../enums/enums';
 import { State } from '../../../types/types';
-import { getPackageInfoOfSelectedAttribution } from '../../selectors/all-views-resource-selectors';
+import {
+  getPackageInfoOfSelectedAttribution,
+  getPackageInfoOfSelectedExternalAttribution,
+} from '../../selectors/all-views-resource-selectors';
 import { getSelectedView } from '../../selectors/view-selector';
 import { AppThunkAction, AppThunkDispatch } from '../../types';
 import { setTemporaryPackageInfo } from '../resource-actions/all-views-simple-actions';
@@ -36,6 +39,7 @@ export function resetViewState(): ResetViewStateAction {
 
 export function navigateToView(view: View): AppThunkAction {
   return (dispatch: AppThunkDispatch, getState: () => State): void => {
+    console.log('view: ', view);
     if (getSelectedView(getState()) === view) {
       return;
     }
@@ -47,7 +51,9 @@ export function navigateToView(view: View): AppThunkAction {
     const updatedTemporaryPackageInfo: PackageInfo =
       view === View.Audit
         ? getAttributionOfDisplayedPackageInManualPanel(getState())
-        : getPackageInfoOfSelectedAttribution(getState());
+        : view === View.Attribution
+        ? getPackageInfoOfSelectedAttribution(getState())
+        : getPackageInfoOfSelectedExternalAttribution(getState());
     dispatch(setTemporaryPackageInfo(updatedTemporaryPackageInfo));
   };
 }

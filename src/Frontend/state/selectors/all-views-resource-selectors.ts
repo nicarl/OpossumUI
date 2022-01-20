@@ -149,6 +149,19 @@ export function getPackageInfoOfSelectedAttribution(state: State): PackageInfo {
   return attributions[selectedAttributionId];
 }
 
+export function getPackageInfoOfSelectedExternalAttribution(
+  state: State
+): PackageInfo {
+  const selectedAttributionId = getSelectedAttributionId(state);
+
+  if (!selectedAttributionId) {
+    return {};
+  }
+  const attributions = getExternalAttributions(state);
+
+  return attributions[selectedAttributionId];
+}
+
 export function getPackageInfoOfSelected(state: State): PackageInfo {
   return getSelectedView(state) === View.Audit
     ? getAttributionOfDisplayedPackageInManualPanel(state)

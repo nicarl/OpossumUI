@@ -76,7 +76,8 @@ export function App(): ReactElement {
       case View.Audit:
         return <AuditView />;
       case View.Attribution:
-        return <AttributionView />;
+      case View.Signal:
+        return <AttributionView view={selectedView} />;
       case View.Report:
         return <ReportView />;
     }

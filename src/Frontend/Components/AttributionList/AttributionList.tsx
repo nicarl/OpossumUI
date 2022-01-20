@@ -12,6 +12,7 @@ import { FilteredList } from '../FilteredList/FilteredList';
 import { PackageCard } from '../PackageCard/PackageCard';
 import { ListCardConfig } from '../../types/types';
 import { useCheckboxStyles } from '../../shared-styles';
+import { View } from '../../enums/enums';
 
 const useStyles = makeStyles({
   topElements: {
@@ -35,6 +36,7 @@ interface AttributionListProps {
   title: string;
   topRightElement?: JSX.Element;
   filterElement?: JSX.Element;
+  view: View;
 }
 
 export function AttributionList(props: AttributionListProps): ReactElement {
@@ -86,6 +88,7 @@ export function AttributionList(props: AttributionListProps): ReactElement {
         }}
         hideResourceSpecificButtons={true}
         showCheckBox={true}
+        view={props.view}
       />
     );
   }

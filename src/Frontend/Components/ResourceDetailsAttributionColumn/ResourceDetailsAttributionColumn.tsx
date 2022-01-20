@@ -132,7 +132,6 @@ export function ResourceDetailsAttributionColumn(
     manualData.attributions,
     externalData.attributions
   );
-
   const showSaveGloballyButton: boolean = hasAttributionMultipleResources(
     attributionIdOfSelectedPackageInManualPanel,
     manualData.attributionsToResources

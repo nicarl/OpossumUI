@@ -341,6 +341,13 @@ export function TopBar(): ReactElement {
           {'Attribution'}
         </MuiToggleButton>
         <MuiToggleButton
+          value={View.Signal}
+          className={classes.viewButtons}
+          disabled={selectedView === View.Signal}
+        >
+          {'Signal'}
+        </MuiToggleButton>
+        <MuiToggleButton
           value={View.Report}
           className={classes.viewButtons}
           disabled={selectedView === View.Report}

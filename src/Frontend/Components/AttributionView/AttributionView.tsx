@@ -7,10 +7,11 @@ import makeStyles from '@mui/styles/makeStyles';
 import React, { ReactElement, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
 import { Attributions } from '../../../shared/shared-types';
-import { PackagePanelTitle } from '../../enums/enums';
+import { PackagePanelTitle, View } from '../../enums/enums';
 import { changeSelectedAttributionIdOrOpenUnsavedPopup } from '../../state/actions/popup-actions/popup-actions';
 import {
   getAttributionIdMarkedForReplacement,
+  getExternalAttributions,
   getManualAttributions,
 } from '../../state/selectors/all-views-resource-selectors';
 import { getSelectedAttributionId } from '../../state/selectors/attribution-view-resource-selectors';
@@ -19,9 +20,9 @@ import { useWindowHeight } from '../../util/use-window-height';
 import { AttributionDetailsViewer } from '../AttributionDetailsViewer/AttributionDetailsViewer';
 import { AttributionList } from '../AttributionList/AttributionList';
 import {
-  OpossumColors,
   clickableIcon,
   disabledIcon,
+  OpossumColors,
 } from '../../shared-styles';
 import { topBarHeight } from '../TopBar/TopBar';
 import { FilterMultiSelect } from '../Filter/FilterMultiSelect';
@@ -48,10 +49,21 @@ const useStyles = makeStyles({
   },
 });
 
-export function AttributionView(): ReactElement {
+interface AttributionViewProps {
+  view: View.Attribution | View.Signal;
+}
+
+export function AttributionView(props: AttributionViewProps): ReactElement {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const attributions: Attributions = useAppSelector(getManualAttributions);
+  const manualAttributions: Attributions = useAppSelector(
+    getManualAttributions
+  );
+  const externalAttributions: Attributions = useAppSelector(
+    getExternalAttributions
+  );
+  const attributions: Attributions =
+    props.view === View.Attribution ? manualAttributions : externalAttributions;
   const selectedAttributionId: string = useAppSelector(
     getSelectedAttributionId
   );
@@ -60,7 +72,9 @@ export function AttributionView(): ReactElement {
   );
 
   function onCardClick(attributionId: string): void {
-    dispatch(changeSelectedAttributionIdOrOpenUnsavedPopup(attributionId));
+    dispatch(
+      changeSelectedAttributionIdOrOpenUnsavedPopup(attributionId, props.view)
+    );
   }
 
   const filteredAttributions = useFilters(attributions);
@@ -109,8 +123,9 @@ export function AttributionView(): ReactElement {
             className={showMultiSelect ? undefined : classes.hiddenFilter}
           />
         }
+        view={props.view}
       />
-      <AttributionDetailsViewer />
+      <AttributionDetailsViewer view={props.view} />
     </div>
   );
 }

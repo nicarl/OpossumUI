@@ -34,6 +34,7 @@ export function NotSavedPopup(): ReactElement {
   );
   const view = useAppSelector(getSelectedView);
   const isSavingDisabled = useAppSelector(getIsSavingDisabled);
+  console.log('notsavedpopup: ');
   const showSaveGloballyButton =
     view === View.Audit &&
     hasAttributionMultipleResources(

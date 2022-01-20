@@ -9,6 +9,7 @@ import { getAlphabeticalComparer } from '../../util/get-alphabetical-comparer';
 import { List } from '../List/List';
 import { PackageCard } from '../PackageCard/PackageCard';
 import { ListCardConfig } from '../../types/types';
+import { View } from '../../enums/enums';
 
 const addNewAttributionButtonText = 'Add new attribution';
 const addNewAttributionButtonId = 'ADD_NEW_ATTRIBUTION_ID';
@@ -77,6 +78,7 @@ export function ManualAttributionList(
           licenseName: attribution.licenseName,
         }}
         showOpenResourcesIcon={!isButton}
+        view={View.Attribution}
       />
     );
   }
